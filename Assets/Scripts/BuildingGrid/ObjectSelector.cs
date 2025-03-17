@@ -1,5 +1,6 @@
+using Buildings;
+using InputSystem;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Grid
 {
@@ -26,32 +27,24 @@ namespace Grid
                 {
                     Vector3 worldPosition = ray.GetPoint(position);
 
-                    int x = Mathf.RoundToInt(worldPosition.x);
-                    int y = Mathf.RoundToInt(worldPosition.z);
+                    int x = SetPosition(worldPosition.x);
+                    int y = SetPosition(worldPosition.z);
 
                     bool available = true;
 
                     if (x < 0 || x > _buildingGrid.GridSize.x - _building.Size.x)
-                    {
                         available = false;
-                    }
 
                     if (y < 0 || y > _buildingGrid.GridSize.y - _building.Size.y)
-                    {
                         available = false;
-                    }
 
                     if (available && _buildingGrid.IsPlaceTaken(x, y))
-                    {
                         available = false;
-                    }
 
                     _building.ChangePositionAndRenderer(x, y, available);
 
                     if (available && _controller.Select)
-                    {
                         _buildingGrid.PlaceAvailableBuilding(x, y);
-                    }
 
                     if (_controller.Unselect)
                         Destroy(_building.gameObject);
@@ -63,6 +56,11 @@ namespace Grid
         {
             _building = building;
             _buildingGrid.SetBuilding(building);
+        }
+
+        private int SetPosition(float worldPosition)
+        {
+            return Mathf.RoundToInt(worldPosition);
         }
     }
 }

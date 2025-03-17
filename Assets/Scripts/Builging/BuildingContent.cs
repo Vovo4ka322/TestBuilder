@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BuildingContent", menuName = "BuildingContent")]
-public class BuildingContent : ScriptableObject
+namespace Buildings
 {
-    [SerializeField] private List<Building> _buildings;
-
-    public IReadOnlyList<Building> Buildings => _buildings;
-
-    public Building GetBuildingPrefab(BuildingType buildingType)
+    [CreateAssetMenu(fileName = "BuildingContent", menuName = "BuildingContent")]
+    public class BuildingContent : ScriptableObject
     {
-        return _buildings.Find(b => b.BuildingType == buildingType);
+        [SerializeField] private List<Building> _buildings;
+
+        public IReadOnlyList<Building> Buildings => _buildings;
+
+        public Building GetBuildingPrefab(BuildingType buildingType)
+        {
+            return _buildings.Find(b => b.BuildingType == buildingType);
+        }
     }
 }

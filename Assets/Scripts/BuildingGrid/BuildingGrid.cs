@@ -1,7 +1,7 @@
+using Buildings;
 using Data;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Grid
 {
@@ -42,8 +42,8 @@ namespace Grid
         {
             foreach (var buildingData in _buildingData.BuildingSaveData)
             {
-                var buildingPrefab = GetBuildingPrefabByType(buildingData.BuildingType);
-                var building = Instantiate(buildingPrefab, new Vector3(buildingData.Position.x, 0, buildingData.Position.y), Quaternion.identity);
+                Building buildingPrefab = GetBuildingPrefabByType(buildingData.BuildingType);
+                Building building = Instantiate(buildingPrefab, new Vector3(buildingData.Position.x, 0, buildingData.Position.y), Quaternion.identity);
 
                 PlaceBuildingOnGrid(building, buildingData.Position);
             }
@@ -73,13 +73,7 @@ namespace Grid
             AvailableBuilding.SetBaseRenderer();
             var building = Instantiate(AvailableBuilding, AvailableBuilding.transform.position, AvailableBuilding.transform.rotation);
 
-            for (int x = 0; x < AvailableBuilding.Size.x; x++)
-            {
-                for (int y = 0; y < AvailableBuilding.Size.y; y++)
-                {
-                    _gridArray[placeX + x, placeY + y] = building;
-                }
-            }
+            SetBuildingInGridArray(AvailableBuilding, building, placeX, placeY);
 
             _buildingData.BuiltBuildings(building.BuildingType, new Vector2Int(placeX, placeY));
             _dataSaver.Save();
@@ -87,16 +81,10 @@ namespace Grid
 
         private void Delete(Building building)
         {
-            int posX = Mathf.RoundToInt(building.transform.position.x);
-            int posY = Mathf.RoundToInt(building.transform.position.z);
+            int posX = SetPosition(building.transform.position.x);
+            int posY = SetPosition(building.transform.position.z);
 
-            for (int x = 0; x < building.Size.x; x++)
-            {
-                for (int y = 0; y < building.Size.y; y++)
-                {
-                    _gridArray[posX + x, posY + y] = null;
-                }
-            }
+            SetBuildingInGridArray(building, null, posX, posY);
 
             if (building != null)
             {
@@ -107,6 +95,11 @@ namespace Grid
             _dataSaver.Save();
         }
 
+        private int SetPosition(float worldPosition)
+        {
+            return Mathf.RoundToInt(worldPosition);
+        }
+
         private Building GetBuildingPrefabByType(BuildingType buildingType)
         {
             return _buildingContent.GetBuildingPrefab(buildingType);
@@ -114,11 +107,16 @@ namespace Grid
 
         private void PlaceBuildingOnGrid(Building building, Vector2Int position)
         {
+            SetBuildingInGridArray(building, building, position.x, position.y);
+        }
+
+        private void SetBuildingInGridArray(Building building, Building VariableRightSide, int xPosition, int yPosition)
+        {
             for (int x = 0; x < building.Size.x; x++)
             {
                 for (int y = 0; y < building.Size.y; y++)
                 {
-                    _gridArray[position.x + x, position.y + y] = building;
+                    _gridArray[xPosition + x, yPosition + y] = VariableRightSide;
                 }
             }
         }
