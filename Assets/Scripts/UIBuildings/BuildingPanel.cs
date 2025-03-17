@@ -1,6 +1,7 @@
+using Buildings;
 using UnityEngine;
 
-namespace Buildings
+namespace UIBuildings
 {
     public class BuildingPanel : MonoBehaviour
     {

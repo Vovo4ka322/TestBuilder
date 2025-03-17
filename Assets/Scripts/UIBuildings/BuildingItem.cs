@@ -2,8 +2,9 @@
 using UnityEngine.UI;
 using TMPro;
 using Grid;
+using Buildings;
 
-namespace Buildings
+namespace UIBuildings
 {
     public class BuildingItem : MonoBehaviour
     {

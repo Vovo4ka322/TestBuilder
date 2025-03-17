@@ -1,7 +1,8 @@
-﻿using Grid;
+﻿using Buildings;
+using Grid;
 using UnityEngine;
 
-namespace Buildings
+namespace UIBuildings
 {
     public class BuildingViewerFactory : MonoBehaviour
     {

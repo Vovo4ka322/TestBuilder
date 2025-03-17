@@ -1,7 +1,7 @@
 using Buildings;
 using Data;
 using Grid;
-using InputSystem;
+using UIBuildings;
 using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
